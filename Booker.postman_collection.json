@@ -1,0 +1,471 @@
+{
+	"info": {
+		"_postman_id": "d515313f-899d-4381-b5e1-3717d8fa78eb",
+		"name": "Booker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35312829"
+	},
+	"item": [
+		{
+			"name": "creatToken",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"token\", pm.response.json().token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"admin\",\r\n    \"password\" : \"password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{bas_url}}/auth",
+					"host": [
+						"{{bas_url}}"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreatBooking",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();//Response body'yi json olarak alır.\r",
+							"var bookingid = jsonData.bookingid//Json datadan bookingid'yi alır.\r",
+							"\r",
+							"var totalPrice = Math.round(Math.random()*500);\r",
+							"pm.collectionVariables.set(\"total_price\", totalPrice); // Request öncesi total price set ediliyor\r",
+							"\r",
+							"\r",
+							"pm.collectionVariables.set(\"booking_id\",  bookingid);//Response body'de alınan bookingid'yi collection variable'a atar.\r",
+							"\r",
+							"pm.test(\"booking_id\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.bookingid).to.eql(pm.collectionVariables.get(\"booking_id\"));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.collectionVariables.set(\"first_name\", pm.response.json().booking.firstname); // bu sekilde tek hamlede de yapilabilir.\r",
+							"\r",
+							"pm.test(\"first_name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.booking.firstname).to.eql(pm.collectionVariables.get(\"first_name\"));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.collectionVariables.set(\"last_name\", pm.response.json().booking.lastname);\r",
+							"\r",
+							"pm.test(\"last_name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.booking.lastname).to.eql(pm.collectionVariables.get(\"last_name\"));\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.set(\"check_in\", pm.response.json().booking.bookingdates.checkin);\r",
+							"\r",
+							"pm.test(\"check_in\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.booking.bookingdates.checkin).to.eql(pm.collectionVariables.get(\"check_in\"));\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.set(\"check_out\", pm.response.json().booking.bookingdates.checkout);\r",
+							"\r",
+							"pm.test(\"check_out\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.booking.bookingdates.checkout).to.eql(pm.collectionVariables.get(\"check_out\"));\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.set(\"total_price\", pm.response.json().booking.totalprice);\r",
+							"\r",
+							"pm.test(\"total_price\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.booking.totalprice).to.eql(pm.collectionVariables.get(\"total_price\"));\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.set(\"additional_needs\", pm.response.json().booking.additionalneeds);\r",
+							"\r",
+							"pm.test(\"additional_needs\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.booking.additionalneeds).to.eql(pm.collectionVariables.get(\"additional_needs\"));\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.set(\"deposit_paid\", pm.response.json().booking.depositpaid);\r",
+							"\r",
+							"pm.test(\"deposit_paid\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.booking.depositpaid).to.eql(pm.collectionVariables.get(\"deposit_paid\"));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstname\": \"{{$randomFirstName}}\",\r\n    \"lastname\": \"{{$randomLastName}}\",\r\n    \"totalprice\": {{total_price}},\r\n    \"depositpaid\": {{$randomBoolean}},\r\n    \"bookingdates\": {\r\n        \"checkin\": \"{{$randomDateRecent}}\",\r\n        \"checkout\": \"{{$randomDateFuture}}\"\r\n    },\r\n    \"additionalneeds\": \"{{$randomWord}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{bas_url}}/booking",
+					"host": [
+						"{{bas_url}}"
+					],
+					"path": [
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetBooking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.firstname).to.eql(pm.collectionVariables.get(\"first_name\"));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"checkin test\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.bookingdates.checkin).to.eql(pm.collectionVariables.get(\"check_in\"))});\r",
+							"\r",
+							"\r",
+							"pm.test(\"chechk out\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.bookingdates.checkout).to.eql(pm.collectionVariables.get(\"check_out\"));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{bas_url}}/booking/{{booking_id}}",
+					"host": [
+						"{{bas_url}}"
+					],
+					"path": [
+						"booking",
+						"{{booking_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UbdateBooking",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"first_name\", pm.response.json().firstname);\r",
+							"pm.collectionVariables.set(\"last_name\", pm.response.json().lastname);\r",
+							"pm.collectionVariables.set(\"total_price\", pm.response.json().totalprice);\r",
+							"pm.collectionVariables.set(\"deposit_paid\", pm.response.json().depositpaid);\r",
+							"pm.collectionVariables.set(\"check_in\", pm.response.json().bookingdates.checkin);\r",
+							"pm.collectionVariables.set(\"check_out\", pm.response.json().bookingdates.checkout);\r",
+							"pm.collectionVariables.set(\"additional_needs\", pm.response.json().additionalneeds);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "token={{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstname\": \"{{$randomFirstName}}\",\r\n    \"lastname\": \"{{$randomLastName}}\",\r\n    \"totalprice\": {{total_price}},\r\n    \"depositpaid\": {{$randomBoolean}},\r\n    \"bookingdates\": {\r\n        \"checkin\": \"{{$randomDateRecent}}\",\r\n        \"checkout\": \"{{$randomDateFuture}}\"\r\n    },\r\n    \"additionalneeds\": \"{{$randomWord}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{bas_url}}/booking/{{booking_id}}",
+					"host": [
+						"{{bas_url}}"
+					],
+					"path": [
+						"booking",
+						"{{booking_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUpdateBooking",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"first_name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.firstname).to.eql(pm.collectionVariables.get(\"first_name\"));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"last_name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.lastname).to.eql(pm.collectionVariables.get(\"last_name\"));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"check_in\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.bookingdates.checkin).to.eql(pm.collectionVariables.get(\"check_in\"));\r",
+							"});\r",
+							";\r",
+							"\r",
+							"pm.test(\"check_out\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.bookingdates.checkout).to.eql(pm.collectionVariables.get(\"check_out\"));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"total_price\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.totalprice).to.eql(pm.collectionVariables.get(\"total_price\"));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"additional_needs\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.additionalneeds).to.eql(pm.collectionVariables.get(\"additional_needs\"));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"deposit_paid\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.depositpaid).to.eql(pm.collectionVariables.get(\"deposit_paid\"));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{bas_url}}/booking/{{booking_id}}",
+					"host": [
+						"{{bas_url}}"
+					],
+					"path": [
+						"booking",
+						"{{booking_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "booking_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "bas_url",
+			"value": "https://restful-booker.herokuapp.com"
+		},
+		{
+			"key": "last_name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "total_price",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "check_in",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "check_out",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "additional_needs",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "deposit_paid",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "first_name",
+			"value": ""
+		}
+	]
+}
